@@ -23,12 +23,12 @@ namespace Szeminarium1
         void main()
         {
 			outCol = vCol;
-            gl_Position = vec4(vPos.x, vPos.y, vPos.z, 1.0);
+            gl_Position = vec4(vPos.x, vPos.y, vPos.z * 0.4, 1.0);
         }
         ";
 
         private static readonly string FragmentShaderSource = @"
-        #version 330 core
+        #version 320 core
         out vec4 FragColor;
 		
 		in vec4 outCol;
@@ -74,7 +74,7 @@ namespace Szeminarium1
             uint fshader = Gl.CreateShader(ShaderType.FragmentShader);
 
             Gl.ShaderSource(vshader, VertexShaderSource);
-            //Gl.CompileShader(vshader);
+            Gl.CompileShader(vshader);
             Gl.GetShader(vshader, ShaderParameterName.CompileStatus, out int vStatus);
             if (vStatus != (int)GLEnum.True)
                 throw new Exception("Vertex shader failed to compile: " + Gl.GetShaderInfoLog(vshader));
@@ -84,9 +84,8 @@ namespace Szeminarium1
 
             program = Gl.CreateProgram();
             Gl.AttachShader(program, vshader);
-            Gl.LinkProgram(program);
             Gl.AttachShader(program, fshader);
-            //Gl.LinkProgram(program);
+            Gl.LinkProgram(program);
             Gl.DetachShader(program, vshader);
             Gl.DetachShader(program, fshader);
             Gl.DeleteShader(vshader);
