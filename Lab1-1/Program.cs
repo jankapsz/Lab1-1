@@ -74,7 +74,7 @@ namespace Szeminarium1
             uint fshader = Gl.CreateShader(ShaderType.FragmentShader);
 
             Gl.ShaderSource(vshader, VertexShaderSource);
-            Gl.CompileShader(vshader);
+            //Gl.CompileShader(vshader);
             Gl.GetShader(vshader, ShaderParameterName.CompileStatus, out int vStatus);
             if (vStatus != (int)GLEnum.True)
                 throw new Exception("Vertex shader failed to compile: " + Gl.GetShaderInfoLog(vshader));
@@ -84,8 +84,9 @@ namespace Szeminarium1
 
             program = Gl.CreateProgram();
             Gl.AttachShader(program, vshader);
-            Gl.AttachShader(program, fshader);
             Gl.LinkProgram(program);
+            Gl.AttachShader(program, fshader);
+            //Gl.LinkProgram(program);
             Gl.DetachShader(program, vshader);
             Gl.DetachShader(program, fshader);
             Gl.DeleteShader(vshader);
@@ -137,13 +138,13 @@ namespace Szeminarium1
             Gl.BindBuffer(GLEnum.ArrayBuffer, vertices);
             Gl.BufferData(GLEnum.ArrayBuffer, (ReadOnlySpan<float>)vertexArray.AsSpan(), GLEnum.StaticDraw);
             Gl.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 0, null);
-            Gl.EnableVertexAttribArray(1);
+            Gl.EnableVertexAttribArray(0);
 
             uint colors = Gl.GenBuffer();
             Gl.BindBuffer(GLEnum.ArrayBuffer, colors);
             Gl.BufferData(GLEnum.ArrayBuffer, (ReadOnlySpan<float>)colorArray.AsSpan(), GLEnum.StaticDraw);
             Gl.VertexAttribPointer(1, 4, VertexAttribPointerType.Float, false, 0, null);
-            Gl.EnableVertexAttribArray(4);
+            Gl.EnableVertexAttribArray(1);
 
             uint indices = Gl.GenBuffer();
             Gl.BindBuffer(GLEnum.ElementArrayBuffer, indices);
